@@ -1,10 +1,10 @@
 # Basic text reporter for Newman
 
 ## Installation
-Run `npm install --save newman-reporter-text`
+Run `npm install --save newman-reporter-basicText@git+ssh://git@github.com:nbcdotcom/newman-reporter-basicText.git`
 
 ## Usage
-In order to use this custom reporter, simply add 'text' to the list of reporters.
+In order to use this custom reporter, simply add 'basicText' to the list of reporters.
 
 ### Options
 This text reporter also accepts three options.
@@ -12,18 +12,18 @@ This text reporter also accepts three options.
 * cli: If you'd like newman to output the results of the collection to stdout, set the 'cli' property as 'true' (string not bool).
 * rolling: If you'd like newman to output the results to a new file based on the current day set this property to 'true'
 
-Note that you do not have to do `require('newman-reporter-text')` anywhere as newman will automatically require the package when the collection is run.
+Note that you do not have to do `require('newman-reporter-basicText')` anywhere as newman will automatically require the package when the collection is run.
 
 ```
 newman.run({
     collection: require('./tests.postman_collection.json'),
-    reporters: 'text',
+    reporters: 'basicText',
     reporter: {
-        'text': {
+        'basicText': {
             // Take output and save it to file
             export: `./logs/${startTime}.txt`,
             // Output to rolling file based on current day
-            rolling: 'ture',
+            rolling: 'true',
             // Output the results to stdout
             cli: 'true'
         }
@@ -34,7 +34,7 @@ newman.run({
 ```
 
 ```
-newman run ./tests.postman_collection.json --reporter text --reporter-text-export './logs/output.txt' --reporter-text-rolling 'true' --reporter-text-cli 'true'
+newman run ./tests.postman_collection.json --reporter basicText --reporter-basicText-export './logs/output.txt' --reporter-basicText-rolling 'true' --reporter-basicText-cli 'true'
 ```
 
 ## Example Output
