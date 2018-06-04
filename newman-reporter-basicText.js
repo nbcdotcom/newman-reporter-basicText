@@ -19,8 +19,8 @@ module.exports = function(newman, reporterOptions) {
 
     // Add time length for all tests
     newman.on('start', () => {
-        log(`Start collection run at ${new Date()}\n`);
-        this.count = 1;
+        log(`Start collection run at ${new Date()}\n\n`);
+        this.count = 0;
     });
 
     newman.on('beforeItem', (err, o) => { });
@@ -39,19 +39,18 @@ module.exports = function(newman, reporterOptions) {
     newman.on('script', (err, o) => { });
 
     newman.on('assertion', (err, o) => {
+        this.count++;
         if (err) {
             let responses = JSON.parse(JSON.stringify(o.item.responses));
-            log(`✗ Assertion failed! [${this.count} / ${o.item.name}] at ${new Date()}: "${o.assertion}"\n`);
-            log('URL PATH: ' + o.item.request.url.path.join('/') + '\n');
+            log(`✗ Assertion failed! [${this.count} / ${o.item.name}]: "${o.assertion}"\n`);
             if (responses && responses.length > 0) {
-                log('CODE: ' + responses[0].code + '\n');
-                log('BODY: ' + responses[0].body + '\n');
+                log('  URL PATH: ' + o.item.request.url.path.join('/') + '\n');
+                log('  CODE: ' + responses[0].code + '\n');
+                log('  BODY: ' + responses[0].body + '\n');
             }
         } else {
-            log(` ✔ Assertion passed! [${this.count} / ${o.item.name}]: "${o.assertion}"\n`);
+            log(`✔ Assertion passed! [${this.count} / ${o.item.name}]: "${o.assertion}"\n`);
         }
-
-        this.count++;
     });
 
     newman.on('beforeDone', (err) => {
@@ -60,7 +59,7 @@ module.exports = function(newman, reporterOptions) {
             return;
         }
 
-        log(`Collection run completed for collection: ${this.count} tests executed\n`);
+        log(`\nCollection run completed for collection: ${this.count} tests executed\n`);
 
         // Export to a single file based on rolling option
         let options = {
