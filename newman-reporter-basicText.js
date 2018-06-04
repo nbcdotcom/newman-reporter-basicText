@@ -31,7 +31,7 @@ module.exports = function(newman, reporterOptions) {
       if (err) {
         console.log(JSON.stringify(err));
       }
-      if (o) {
+      if (o && useCli) {
         console.log(JSON.stringify(o));
       }
     });
